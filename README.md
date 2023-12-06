@@ -47,7 +47,12 @@ I reserved 5% (~1,000) for validation, 0.5% (100) for testing, and the rest was 
 #### Other data
 I also tried using the [Giant MIDI dataset](https://github.com/bytedance/GiantMIDI-Piano "Giant MIDI dataset"), the [ATEPP dataset](https://github.com/tangjjbetsy/ATEPP "ATEPP dataset"), and the [Maestro dataset](https://magenta.tensorflow.org/datasets/maestro "Maestro dataset"). But the results weren't as good in terms of rhythm as all these dataset contain MIDIs transcribed from live performances, meaning that the bar indications, time signatures, and tempos are missing (and perhaps most importantly, the timing is much more complex/ less predictable). 
 ## Repo files
+This repository contains the code only for the two best performing models (X transformer using REMI tokenization with and without BPE). Please contact me if you'd like to access the code for other models, too.
 - You can use the four python scripts described above (*MMD Data preparation*) to prep your MIDIs if needed. Please note that they likely require some adjustment: currently, some values specific to my system are hard-coded there (paths, N of cores used during multiprocessing, etc.)
 - the **XT_REMI_transposed** and** XT_REMI_transposed_BPE** are two notebooks for training a model (without and with BPE, respectively). By default both scripts save the models periodically to the **ckpt directory ** and they also save training and validation losses and accuracies in the **root directory**.
 - **preprocess_all_REMI_transposed** is a notebook for pre-processing your MIDI (converting them into tokens in JSON format). There is a part in there for BPE encoding, too.
 - Finally, the **Generation_BPE** notebook can be used for generating compositions from a pretrained model. By default, the model paramters are those of the BPE model (hence the name), but they can be easily changed to the non-BPE one. Currently, the script is very rudemantary and is missing one important feature: transposing the pieces back to their original key (should be quite easy to do, but it's not there yet).
+
+I am also including ways to evaluate the models both objectively (metric graphs) and subjectively (generated samples):
+ - the folder **figures** contains the graphs
+ - the folder **samples** contains the samples
