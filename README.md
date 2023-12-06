@@ -56,3 +56,6 @@ This repository contains the code only for the two best performing models (X tra
 I am also including ways to evaluate the models both objectively (metric graphs) and subjectively (generated samples):
  - the folder **figures** contains the graphs
  - the folder **samples** contains the samples
+
+## Hardware
+I used vast.ai and trained the models on NVIDIA RTX 4090 (24GB RAM). I used a mini batch size of 2 of gradient accumulation every 16 steps to simulate batch sizes of 32. 
