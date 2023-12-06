@@ -10,6 +10,7 @@ The best performing version uses REMI tokenization and byte-pair encoding (BPE).
 - **Natooz** for creation of the MIDI tokenization library [miditok](https://github.com/Natooz/MidiTok/tree/main/miditok "miditok")
 
 ## The journey
+#### First Models
 I tested out multiple models and tokenization techniques to see which one is the most promising:
 1. X Transformer without BPE (Structured tokenization)
 2. X Transformer with BPE (Structured tokenization)
@@ -17,10 +18,31 @@ I tested out multiple models and tokenization techniques to see which one is the
 4. Perceiver AR with BPE (Structured tokenization)
 
 Based on the results of these four models, I found that X Transformer performs better than Perceiver AR for this task. While Perceiver AR allowed for a much longer *maximum sequence length* on the same hardware compared to X Transformer (*4096 vs 1024*), the results were not encouraging in terms subjective evaluation of the generated output.  Consequently, I proceeded with the X Transformer architecture, testing the following models:
-
+#### Next iteration of models
 5. X transformer without BPE - larger model (Structured tokenization)
 6. X transformer with BPE - larger model (Structured tokenization)
 7. X transformer without BPE - larger model (REMI tokenization)
 8. X transformer with BPE - larger model (REMI tokenization)
 
-Two things stood out here: (1) REMI tokenization resulted in better rhythmic patterns: the generated music generally had more regular rhythm both within and across bars. (2) BPE resulted in more coherent music where musical ideas (motifs) are carried and repeated at  various points in the generated piece (with variations). This could be attributed to two factors, in my opinion: first, BPE can capture recurring musical motifs or phrases, enabling the model to represent more complex musical structures; and BPE effectively extends the maximum sequence length through data compression (with BPE vocab of 2000, the compression rate was ~0.52).
+Two things stood out here: (1) **REMI tokenization resulted in better rhythmic patterns**: the generated music generally had more regular rhythm both within and across bars. (2) **BPE resulted in more coherent music** where musical ideas (motifs) are carried and repeated at  various points in the generated piece (with variations). This could be attributed to two factors, in my opinion: first, BPE can capture recurring musical motifs or phrases, enabling the model to represent more complex musical structures; and BPE effectively extends the maximum sequence length through data compression (with BPE vocab of 2000, the compressed size was ~0.52 of the original).
+## Final model
+The best performing model, as you might have guessed, was the X transformer with BPE trained on REMI-tokenized data. The model performed well and produced some encouraging results (see folder **samples** to listen to same of the generated outputs). In terms of accuracy, the model reached ~70%. 
+
+I think the results could be improved by tuning the hyper-paramaters (which I didn't do much) and experimenting with the additional features of the x-transformers library (which I did very little of) such as talking-heads attention, reordering of the sublayers, forgetful causal masks, etc. 
+#### Objective evaluation
+I am also including some objective evaluations of the two best performing models (X transformer - BPE - REMI, and X transformer - no BPE - REMI). The evaluations are performed on a number of metrics and compare (1) a subset of the training data (N=2000), (2) a generated dataset with BPE (N=200), and (3) a generated dataset without BPE (N=200). The graphs can be found in the folder **figures**.
+
+## MMD Data preparation
+MMD data contains a variety of MIDI files and is by no means limited to solo piano. Consequently, I had to come up with a way to extract only piano compositions. Some of the files could contain only piano, but still be split into multiple tracks (e.g., different parts of a fugue), so I had to merge them. Additionally, to take the full advantage of REMi tokenization (which uses *bar tokens* to enhance rhythmic representation), I wanted to take only quantized MIDI files (as such, any files transcribed from live perfomances, for instance, were of no use). Finally, I also wanted to transpose all MIDIs to either C major or A minor to aid model generalization. To do so, I took the following steps:
+1. **find_piano_midis.py** . This code takes a directory path as input and identifies all MIDI files that contain only solo piano. It uses two methods to identify solo piano MIDI files: 
+    - Track name check: It checks if the track names of the MIDI file contain terms like "piano" or "keyboard".
+    - MIDI program check: It checks if the MIDI program numbers of the MIDI file are within the range of piano instrument codes. The script saves the identified solo piano MIDI file paths to a pickle file.
+2. **midi_merger.py**: This part takes a directory path containing MIDI files as input and merges all tracks in each MIDI file into a single track. It saves the merged MIDI files to a specified output directory.
+3. **check_quantization.py**: This part takes a directory path containing MIDI files as input and calculates the quantization score for each MIDI file. The quantization score is a measure of how well the MIDI file follows a strict quantized rhythmic structure. It saves the MIDI file paths with quantization scores above a specified threshold (0.5) to a pickle file.
+4. **transpose_midi.py**: This part takes a list of MIDI file paths and transposes each MIDI file to a specified target key. It saves the transposed MIDI files to a specified output directory.
+
+The final transposed midi were tokenized using the miditok library. You can find all the steps in the **preprocess_all_REMI_transposed.ipynb** notebook. In total, this resulted in **23,195 MIDI compositions**, after REMI tokenization.  For some reason, the tokenization eliminated a lot of the compositions (~38,548 before tokenization), but I haven't checked why yet. 
+
+I reserved 5% (~1,000) for validation, 0.5% (100) for testing, and the rest was used for training. 
+#### Other data
+I also tried using the [Giant MIDI dataset](https://github.com/bytedance/GiantMIDI-Piano "Giant MIDI dataset"), the [ATEPP dataset](https://github.com/tangjjbetsy/ATEPP "ATEPP dataset"), and the [Maestro dataset](https://magenta.tensorflow.org/datasets/maestro "Maestro dataset"). But the results weren't as good in terms of rhythm as all these dataset contain MIDIs transcribed from live performances, meaning that the bar indications, time signatures, and tempos are missing (and perhaps most importantly, the timing is much more complex/ less predictable). 
