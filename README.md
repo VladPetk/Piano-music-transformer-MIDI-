@@ -54,6 +54,8 @@ I am also including some objective evaluations of the two best performing models
 
 In terms of objective stats, the BPE and non-BPE models don't exhibit any significant differences. Yet, listening to the generated output, it is easily noticable that the non-BPE model gets 'lost' much more often than the BPE one. To see what I mean by 'getting lost', please see the *choppy* samples in the [**samples/no_BPE**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples/no_BPE "**samples/no_BPE**") folder. This underscores the importance of subjective evaluations in music generation tasks. (*incidentally, if you know of any good objective metrics one might use during training, please let me know*).
 
+![Pitch distribution](figures/all_Pitch Class Entropy_density.png)
+
 ## MMD Data preparation
 *Note: The[ MMD dataset](https://github.com/jeffreyjohnens/MetaMIDIDataset " MMD dataset") is not freely downloadalbe and you need to  request access to it.*
 
