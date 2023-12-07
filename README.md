@@ -2,6 +2,12 @@
 A transformer model for generating solo piano compositions trained on a subset of [MMD data](https://github.com/jeffreyjohnens/MetaMIDIDataset "MMD data").
 
 The best performing version uses REMI tokenization and byte-pair encoding (BPE). While it achieves lower accuracy (~70%) on the validation data than a model without BPE (~80%), the output is much more musical and coherent. The lower accuracy also makes sense given that the model with BPE has a vocabularly size of 2000 compared to 363 without BPE.
+
+The maximum sequence length in the model is 1024 tokens (approx. 220 notes).
+You can view some generated samples in the [folder **samples**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples "folder **samples**"). 
+
+Link to download the best performing pre-trained model (REMI/BPE): [Google Drive](https://drive.google.com/file/d/1OKz_TI4fpazo6uIBekzANfCAcc3d6mIu/view?usp=sharing "Google Drive")
+
 ## Special thanks to:
 - **lucidrains** for creating a powerful and convenient transformer library [x-transformers](https://github.com/lucidrains/x-transformers "x-transformers")
 - **asigalov61** for implementation of x-transformers ([Allegro Music Transformer](https://github.com/asigalov61/Allegro-Music-Transformer "Allegro Music Transformer"))
@@ -26,13 +32,31 @@ Based on the results of these four models, I found that X Transformer performs b
 
 Two things stood out here: (1) **REMI tokenization resulted in better rhythmic patterns**: the generated music generally had more regular rhythm both within and across bars. (2) **BPE resulted in more coherent music** where musical ideas (motifs) are carried and repeated at  various points in the generated piece (with variations). This could be attributed to two factors, in my opinion: first, BPE can capture recurring musical motifs or phrases, enabling the model to represent more complex musical structures; and BPE effectively extends the maximum sequence length through data compression (with BPE vocab of 2000, the compressed size was ~0.52 of the original).
 ## Final model
-The best performing model, as you might have guessed, was the X transformer with BPE trained on REMI-tokenized data. The model performed well and produced some encouraging results (see folder **samples** to listen to same of the generated outputs). In terms of accuracy, the model reached ~70%. 
+The best performing model, as you might have guessed, was the X transformer with BPE trained on REMI-tokenized data. The model performed well and produced some encouraging results (see[ folder **samples/BPE**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples/BPE " folder **samples/BPE**") to listen to same of the generated outputs). In terms of accuracy, the model reached ~70%.
 
-I think the results could be improved by tuning the hyper-paramaters (which I didn't do much) and experimenting with the additional features of the x-transformers library (which I did very little of) such as talking-heads attention, reordering of the sublayers, forgetful causal masks, etc. 
+The model paramaters were:
+```
+batch_size = 2
+gradient_accum = 16
+max_sequence = 1024
+model_dim = 1024
+model_depth = 32
+epochs = 10
+heads = 16
+dim_heads = 64
+layer_dropout = 0.15
+attn_dropout = 0.1
+ff_dropout = 0.15
+```
+I think the results could be improved by tuning the hyper-paramaters (which I didn't do much) and experimenting with the additional features of the x-transformers library (which I did very little of) such as talking-heads attention, reordering of the sublayers, forgetful causal masks, etc.  I am currently working on trying various combinations of these features on a tiny model and will report the results back if I find something.
 #### Objective evaluation
-I am also including some objective evaluations of the two best performing models (X transformer - BPE - REMI, and X transformer - no BPE - REMI). The evaluations are performed on a number of metrics and compare (1) a subset of the training data (N=2000), (2) a generated dataset with BPE (N=200), and (3) a generated dataset without BPE (N=200). The graphs can be found in the folder **figures**.
+I am also including some objective evaluations of the two best performing models (X transformer - BPE - REMI, and X transformer - no BPE - REMI). The evaluations are performed on a number of metrics and compare (1) a subset of the training data (N=2000), (2) a generated dataset with BPE (N=200), and (3) a generated dataset without BPE (N=200). The graphs can be found in the [folder **figures**](https://github.com/VladPetk/Piano_music_transformer/tree/main/figures "folder **figures**").
+
+In terms of objective stats, the BPE and non-BPE models don't exhibit any significant differences. Yet, listening to the generated output, it is easily noticable that the non-BPE model gets 'lost' much more often than the BPE one. To see what I mean by 'getting lost', please see the *choppy* samples in the [**samples/no_BPE**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples/no_BPE "**samples/no_BPE**") folder. This underscores the importance of subjective evaluations in music generation tasks. (*incidentally, if you know of any good objective metrics one might use during training, please let me know*).
 
 ## MMD Data preparation
+*Note: The[ MMD dataset](https://github.com/jeffreyjohnens/MetaMIDIDataset " MMD dataset") is not freely downloadalbe and you need to  request access to it.*
+
 MMD data contains a variety of MIDI files and is by no means limited to solo piano. Consequently, I had to come up with a way to extract only piano compositions. Some of the files could contain only piano, but still be split into multiple tracks (e.g., different parts of a fugue), so I had to merge them. Additionally, to take the full advantage of REMi tokenization (which uses *bar tokens* to enhance rhythmic representation), I wanted to take only quantized MIDI files (as such, any files transcribed from live perfomances, for instance, were of no use). Finally, I also wanted to transpose all MIDIs to either C major or A minor to aid model generalization. To do so, I took the following steps:
 1. **find_piano_midis.py** . This code takes a directory path as input and identifies all MIDI files that contain only solo piano. It uses two methods to identify solo piano MIDI files: 
     - Track name check: It checks if the track names of the MIDI file contain terms like "piano" or "keyboard".
