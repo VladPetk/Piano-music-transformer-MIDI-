@@ -54,7 +54,7 @@ I am also including some objective evaluations of the two best performing models
 
 In terms of objective stats, the BPE and non-BPE models don't exhibit any significant differences. Yet, listening to the generated output, it is easily noticable that the non-BPE model gets 'lost' much more often than the BPE one. To see what I mean by 'getting lost', please see the *choppy* samples in the [**samples/no_BPE**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples/no_BPE "**samples/no_BPE**") folder. This underscores the importance of subjective evaluations in music generation tasks. (*incidentally, if you know of any good objective metrics one might use during training, please let me know*).
 
-Here are a few examples of the objective measures. Th first figure demonstrates the distribution of pitches used. As you can see, both models underperform (use fewer unique pitches) compared to the training data. The second figure shows the distribution of polyphony rates in the three datasets. Here, the BPE model performs slightly better than the non-BPE one.
+Here are a few examples of the objective measures. Th first figure demonstrates the distribution of pitches used. As you can see, both models slightly underperform (use fewer unique pitches in the higher register) compared to the training data. The second figure shows the distribution of polyphony rates in the three datasets. Here, the BPE model performs slightly better than the non-BPE one.
 
 ![Pitches](figures/readme_img_prange.png)
 ![Polyphony](figures/readme_img_polrate.png)
