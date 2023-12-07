@@ -36,6 +36,12 @@ Two things stood out here: (1) **REMI tokenization resulted in better rhythmic p
 ## Final model
 The best performing model, as you might have guessed, was the X transformer with BPE trained on REMI-tokenized data. The model performed well and produced some encouraging results (see[ folder **samples/BPE**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples/BPE " folder **samples/BPE**") to listen to same of the generated outputs). In terms of accuracy, the model reached ~70%.
 
+<div style="display: flex;  margin: auto;">
+  <img src="model_figs/val_acc.png" alt="Image 1" style="width: 45%;">
+  <img src="model_figs/train_acc.png" alt="Image 2" style="width: 45%;">
+</div>
+
+
 The model paramaters were:
 ```
 batch_size = 2
