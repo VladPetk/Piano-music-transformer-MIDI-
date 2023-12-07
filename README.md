@@ -7,6 +7,7 @@ The maximum sequence length in the model is 1024 tokens (approx. 220 notes).
 You can view some generated samples in the [folder **samples**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples "folder **samples**"). 
 
 Link to download the best performing pre-trained model (REMI/BPE): [Google Drive](https://drive.google.com/file/d/1OKz_TI4fpazo6uIBekzANfCAcc3d6mIu/view?usp=sharing "Google Drive")
+Link to download the non-bpe model (worse): [Google Drive](https://drive.google.com/file/d/1lbA1wrCiltiWWjXIK2TQpvyb0_6e_d8M/view?usp=sharing "Google Drive")
 
 ## Special thanks to:
 - **lucidrains** for creating a powerful and convenient transformer library [x-transformers](https://github.com/lucidrains/x-transformers "x-transformers")
