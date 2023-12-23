@@ -70,7 +70,7 @@ Here are a few examples of the objective measures. Th first figure demonstrates 
 ![Pitches](figures/readme_img_prange.png)
 ![Polyphony](figures/readme_img_polrate.png)
 
-#### Update: Classical Piano
+### Update: Classical Piano
 The model trained on exclusively classical piano MIDIs (own dataset) performs very well.  I didn't expect a large model to effectively learn from such a small amount of data (~4000 pieces), but here we are. Though I guess the improvement in accuracy is not only due to the similar(ish) genres of the pieces - I also have more confidence in the quality of those MIDIs.
 
 ![Classical Stats](model_figs/classical_graph_side.png)
