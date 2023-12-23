@@ -1,7 +1,7 @@
 # Solo Piano Music Transformer: Quantized
 A transformer model for generating solo piano compositions trained on a subset of [MMD data](https://github.com/jeffreyjohnens/MetaMIDIDataset "MMD data") and a smaller collection of MIDIs that I've gathered myself.
 
-**The transformer is built with music producers/ composers in mind:** The generated output is less human-like in terms of timing, instead the** notes are quantized** and can be easily converted into sheet music and **fit neatly into the grid of a DAW piano roll**. This simplfies the process of working with the produced continuations significantly.
+**The transformer is built with music producers/ composers in mind:** The generated output is less human-like in terms of timing, instead the **notes are quantized** and can be easily converted into sheet music and **fit neatly into the grid of a DAW piano roll**. This simplfies the process of working with the produced continuations significantly.
 
 The best performing version uses REMI tokenization and byte-pair encoding (BPE). While it achieves lower accuracy (~70%) on the validation data than a model without BPE (~80%), the output is much more musical and coherent. The lower accuracy also makes sense given that the model with BPE has a vocabularly size of 2000 compared to 363 without BPE.
 
@@ -75,6 +75,8 @@ Here are a few examples of the objective measures. Th first figure demonstrates 
 
 #### Update: Classical Piano
 The model trained on exclusively classical piano MIDIs (own dataset) performs very well.  I didn't expect a large model to effectively learn from such a small amount of data (~4000 pieces), but here we are. Though I guess the improvement in accuracy is not only due to the similar(ish) genres of the pieces - I also have more confidence in the quality of those MIDIs.
+
+![Classical Stats](model_figs/classical_stats_graph.png)
 
 ## MMD Data preparation
 *Note: The[ MMD dataset](https://github.com/jeffreyjohnens/MetaMIDIDataset " MMD dataset") is not freely downloadalbe and you need to  request access to it.*
