@@ -42,10 +42,7 @@ Two things stood out here: (1) **REMI tokenization resulted in better rhythmic p
 ## Final model
 The best performing model, as you might have guessed, was the X transformer with BPE trained on REMI-tokenized data. The model performed well and produced some encouraging results (see[ folder **samples/BPE**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples/BPE " folder **samples/BPE**") to listen to same of the generated outputs). In terms of accuracy, the model reached ~70%.
 
-<div style="display: flex;  margin: auto;">
-  <img src="model_figs/val_acc.png" alt="Image 1" style="width: 45%;">
-  <img src="model_figs/train_acc.png" alt="Image 2" style="width: 45%;">
-</div>
+![Final Model stats](model_figs/big_graph_side.png)
 
 
 The model paramaters were:
@@ -76,7 +73,7 @@ Here are a few examples of the objective measures. Th first figure demonstrates 
 #### Update: Classical Piano
 The model trained on exclusively classical piano MIDIs (own dataset) performs very well.  I didn't expect a large model to effectively learn from such a small amount of data (~4000 pieces), but here we are. Though I guess the improvement in accuracy is not only due to the similar(ish) genres of the pieces - I also have more confidence in the quality of those MIDIs.
 
-![Classical Stats](model_figs/classical_stats_graph.png)
+![Classical Stats](model_figs/classical_graph_side.png)
 
 ## MMD Data preparation
 *Note: The[ MMD dataset](https://github.com/jeffreyjohnens/MetaMIDIDataset " MMD dataset") is not freely downloadalbe and you need to  request access to it.*
