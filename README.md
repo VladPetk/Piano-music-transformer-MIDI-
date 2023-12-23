@@ -1,14 +1,20 @@
-# Solo piano music transformer
-A transformer model for generating solo piano compositions trained on a subset of [MMD data](https://github.com/jeffreyjohnens/MetaMIDIDataset "MMD data").
+# Solo Piano Music Transformer: Quantized
+A transformer model for generating solo piano compositions trained on a subset of [MMD data](https://github.com/jeffreyjohnens/MetaMIDIDataset "MMD data") and a smaller collection of MIDIs that I've gathered myself.
+
+**The transformer is built with music producers/ composers in mind:** The generated output is less human-like in terms of timing, instead the** notes are quantized** and can be easily converted into sheet music and **fit neatly into the grid of a DAW piano roll**. This simplfies the process of working with the produced continuations significantly.
 
 The best performing version uses REMI tokenization and byte-pair encoding (BPE). While it achieves lower accuracy (~70%) on the validation data than a model without BPE (~80%), the output is much more musical and coherent. The lower accuracy also makes sense given that the model with BPE has a vocabularly size of 2000 compared to 363 without BPE.
+
+**Update:** a new model trained on *exclusively classical piano* data performs exceptionally well (84% accuracy) as long as the input stays within the classical tradition (Baroque through early 20th century.)
 
 The maximum sequence length in the model is 1024 tokens (approx. 220 notes).
 You can view some generated samples in the [folder **samples**](https://github.com/VladPetk/Piano_music_transformer/tree/main/samples "folder **samples**"). 
 
 Link to download the best performing pre-trained model (REMI/BPE): [Google Drive](https://drive.google.com/file/d/1OKz_TI4fpazo6uIBekzANfCAcc3d6mIu/view?usp=sharing "Google Drive")
 
-Link to download the non-bpe model (worse): [Google Drive](https://drive.google.com/file/d/1lbA1wrCiltiWWjXIK2TQpvyb0_6e_d8M/view?usp=sharing "Google Drive")
+Link to download the non-bpe model (slightly worse subjectively): [Google Drive](https://drive.google.com/file/d/1lbA1wrCiltiWWjXIK2TQpvyb0_6e_d8M/view?usp=sharing "Google Drive")
+
+Link to download the classical data model (best for classical): [Google Drive](https://drive.google.com/file/d/1Ww2NH2ugbAHtVeuUxhafqK0ie-Pgl1_a/view?usp=sharing "Google Drive")
 
 ## Special thanks to:
 - **lucidrains** for creating a powerful and convenient transformer library [x-transformers](https://github.com/lucidrains/x-transformers "x-transformers")
@@ -66,6 +72,9 @@ Here are a few examples of the objective measures. Th first figure demonstrates 
 
 ![Pitches](figures/readme_img_prange.png)
 ![Polyphony](figures/readme_img_polrate.png)
+
+#### Update: Classical Piano
+The model trained on exclusively classical piano MIDIs (own dataset) performs very well.  I didn't expect a large model to effectively learn from such a small amount of data (~4000 pieces), but here we are. Though I guess the improvement in accuracy is not only due to the similar(ish) genres of the pieces - I also have more confidence in the quality of those MIDIs.
 
 ## MMD Data preparation
 *Note: The[ MMD dataset](https://github.com/jeffreyjohnens/MetaMIDIDataset " MMD dataset") is not freely downloadalbe and you need to  request access to it.*
